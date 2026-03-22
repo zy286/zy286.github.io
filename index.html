@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zihan Yan | Theoretical Physicist & AI Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ░░░ SCANLINE OVERLAY ░░░ -->
+<div class="scanlines"></div>
+
+<!-- ░░░ PIXEL CAT (floating companion) ░░░ -->
+<canvas id="cat-canvas"></canvas>
+
+<!-- ░░░ MUSIC PLAYER ░░░ -->
+<div id="music-player" class="pixel-box">
+  <div class="player-header">
+    <span class="pixel-label" id="player-label">MUSIC HERE - PLAY IT!</span>
+    <button id="player-toggle" onclick="togglePlayer()">▴</button>
+  </div>
+  <div id="player-body" style="display:none">
+    <audio id="bg-audio" preload="metadata" loop>
+      <source src="audio/rachmaninoff-pc2-adagio-1924.mp3" type="audio/mpeg" />
+    </audio>
+    <div class="vinyl" id="vinyl">
+      <div class="vinyl-inner">♪</div>
+    </div>
+    <div class="player-info">
+      <div class="track-name">Rachmaninoff Piano Concerto 2<br /><br />Zihan&apos;s Favourite</div>
+      <div class="track-detail">Adagio sostenuto — 1924 recording</div>
+    </div>
+    <p class="player-credit">
+      Background music: Sergei Rachmaninoff, <em>Piano Concerto No.&nbsp;2</em> — 1924 recording, source: Internet Archive (Public Domain Mark).
+    </p>
+    <div class="player-progress-wrap">
+      <input type="range" id="seek" class="player-seek" min="0" max="100" step="0.1" value="0" aria-label="Playback position" />
+      <div class="player-time">
+        <span id="player-time-current">0:00</span>
+        <span id="player-time-sep">/</span>
+        <span id="player-time-duration">0:00</span>
+      </div>
+    </div>
+    <div class="player-controls">
+      <button type="button" class="ctrl-btn" id="play-btn" onclick="toggleMusic()">▶</button>
+      <div class="volume-wrap">
+        <span>♪</span>
+        <input type="range" id="vol" min="0" max="1" step="0.05" value="0.4" oninput="setVolume(this.value)" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ░░░ NAVIGATION ░░░ -->
+<nav id="nav">
+  <div class="nav-logo">
+    <span class="nav-cat">🐱</span>
+    <span class="press-start">Z.YAN</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#news">NEWS</a></li>
+    <li><a href="#research">RESEARCH</a></li>
+    <li><a href="#publications">PAPERS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+  <div class="entropy-counter">
+    S = <span id="entropy-val">0.000</span>
+    <span class="entropy-unit">k<sub>B</sub></span>
+  </div>
+</nav>
+
+<!-- ░░░ HERO ░░░ -->
+<section id="hero">
+  <canvas id="starfield"></canvas>
+  <div class="hero-content">
+    <div class="glitch-wrap">
+      <h1 class="press-start glitch" data-text="ZIHAN YAN">ZIHAN YAN</h1>
+    </div>
+    <div class="hero-sub">
+      <span class="type-cursor" id="hero-type"></span>
+    </div>
+    <div class="hero-tags">
+      <span class="pixel-tag">BLACK HOLES</span>
+      <span class="pixel-tag">QUANTUM GRAVITY</span>
+      <span class="pixel-tag">AI DISCOVERY</span>
+      <span class="pixel-tag">CAMBRIDGE</span>
+    </div>
+    <div class="hero-buttons">
+      <a href="#research" class="pixel-btn pixel-btn--primary">EXPLORE RESEARCH</a>
+      <a href="#publications" class="pixel-btn pixel-btn--outline">VIEW PAPERS</a>
+    </div>
+    <div id="schrodinger-box" class="schrodinger" onclick="toggleSchrodinger()">
+      <div class="schrod-lid">
+        <span class="press-start schrod-label">SCHRÖDINGER'S<br>CAT BOX</span>
+        <span class="schrod-hint">[ click to observe ]</span>
+      </div>
+      <div id="schrod-result" class="schrod-result hidden"></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span class="press-start">SCROLL</span>
+    <div class="arrow-down">▼</div>
+  </div>
+</section>
+
+<!-- ░░░ NEWS ░░░ -->
+<section id="news" class="section">
+  <div class="section-header">
+    <h2 class="press-start section-title"><span class="title-bracket">[</span> RECENT NEWS <span class="title-bracket">]</span></h2>
+  </div>
+  <div class="news-feed">
+
+    <div class="news-item pixel-box news-item--featured">
+      <div class="news-meta">
+        <span class="news-badge news-badge--new">NEW</span>
+        <span class="news-date">2026</span>
+      </div>
+      <div class="news-icon">🚀</div>
+      <div class="news-body">
+        <div class="news-title">Transitioning to AI Research</div>
+        <div class="news-text">
+          I am currently transitioning from a theoretical physicist into an
+          <span class="t-cyan">AI researcher</span>. My background in
+          maths and physics — from black hole entropy to differential geometry —
+          now informs my approach to understanding intelligence, learning dynamics,
+          and scientific discovery through the lens of AI.
+        </div>
+      </div>
+    </div>
+
+    <div class="news-item pixel-box">
+      <div class="news-meta">
+        <span class="news-badge news-badge--phys">PHYSICS</span>
+        <span class="news-date">Summer 2026</span>
+      </div>
+      <div class="news-icon">🎓</div>
+      <div class="news-body">
+        <div class="news-title">PhD Completion Expected</div>
+        <div class="news-text">
+          Thesis defense passed. Degree conferral expected summer 2026.
+          Thesis: <em>Thermodynamics of Non-Stationary Black Holes in Diffeomorphism Invariant Theories</em>.
+        </div>
+      </div>
+    </div>
+
+    <div class="news-item pixel-box">
+      <div class="news-meta">
+        <span class="news-badge news-badge--paper">PAPER</span>
+        <span class="news-date">2026</span>
+      </div>
+      <div class="news-icon">📄</div>
+      <div class="news-body">
+        <div class="news-title">New Publication in JHEP</div>
+        <div class="news-text">
+          "Dynamical entropy of charged black objects" — with M. R. Visser.
+          <em>JHEP</em> vol. 02, p. 003, 2026. <a href="https://arxiv.org/abs/2510.20747" class="t-link" target="_blank">arXiv:2510.20747</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ░░░ ABOUT ░░░ -->
+<section id="about" class="section">
+  <div class="section-header">
+    <h2 class="press-start section-title"><span class="title-bracket">[</span> ABOUT <span class="title-bracket">]</span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="terminal-box about-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+        <span class="t-title">zihan@cambridge:~$</span>
+      </div>
+      <div class="terminal-body">
+        <p class="t-line"><span class="t-cmd">$ whoami</span></p>
+        <p class="t-line t-output">Zihan Yan — Theoretical Physicist &amp; AI Researcher</p>
+        <p class="t-line"><span class="t-cmd">$ cat about.txt</span></p>
+        <p class="t-line t-output">I am <span class="t-hi">Zihan Yan (闫子涵)</span>, a final-year PhD candidate reading Applied Maths and Theoretical Physics at <a href="https://www.damtp.cam.ac.uk" class="t-link" target="_blank" rel="noopener noreferrer">DAMTP</a> &amp; <a href="https://www.trin.cam.ac.uk" class="t-link" target="_blank" rel="noopener noreferrer">Trinity College</a>, <a href="https://www.cam.ac.uk" class="t-link" target="_blank" rel="noopener noreferrer">University of Cambridge</a>, supervised by <a href="https://www.damtp.cam.ac.uk/user/aw846/" class="t-link" target="_blank" rel="noopener noreferrer">Prof. Aron C. Wall</a>. Before that, I completed my BA and MMath at Trinity College, Cambridge, as well.</p>
+        <p class="t-line t-output"></p>
+        <p class="t-line t-output">My PhD research lives at the intersection of <span class="t-purple">black hole thermodynamics</span>, <span class="t-purple">holography</span> and <span class="t-purple">quantum gravity</span>.</p>
+        <p class="t-line"><span class="t-cmd">$ cat interests.txt</span></p>
+        <p class="t-line t-output">physics / mathematics / AI research / piano / 🐱 cats</p>
+        <p class="t-line"><span class="t-cmd">$ cat legacy_site.txt</span></p>
+        <p class="t-line t-output">Old personal site containing teaching and notes from undergrad.</p>
+        <p class="t-line t-output"><a href="https://zihanyan.wordpress.com/" class="t-link" target="_blank" rel="noopener noreferrer">https://zihanyan.wordpress.com/</a></p>
+        <p class="t-line"><span class="t-cmd">$ _<span class="blink">█</span></span></p>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <div class="pixel-portrait">
+        <img
+          class="portrait-photo"
+          id="portrait-photo"
+          src="images/profile.png"
+          alt="Profile photo"
+          width="200"
+          height="220"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="about-stats pixel-box">
+        <div class="stat-row">
+          <span class="stat-label">INSTITUTION</span>
+          <span class="stat-val">University of Cambridge</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">EMAIL</span>
+          <span class="stat-val email-obfuscated">zy286 [at] cam [dot] ac [dot] uk</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">ORCID</span>
+          <span class="stat-val">0000-0003-2998-7040</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">PAPERS</span>
+          <span class="stat-val stat-num">8</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">TALKS</span>
+          <span class="stat-val stat-num">20+</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">CATS</span>
+          <span class="stat-val stat-num">∞</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACADEMIC INTERESTS (subsection of About, before Education) -->
+  <div id="interests" class="about-interests-subsection">
+    <h3 class="press-start sub-title">// ACADEMIC INTERESTS</h3>
+    <div class="interests-grid">
+
+      <div class="interest-cluster pixel-box interest-cluster--ai">
+        <div class="ic-header">
+          <span class="ic-icon">🤖</span>
+          <span class="ic-title press-start">Artificial Intelligence</span>
+        </div>
+        <ul class="ic-items">
+          <li><span class="ic-bullet">→</span> Scientific discovery by AI</li>
+          <li><span class="ic-bullet">→</span> AI imagination &amp; curiosity</li>
+          <li><span class="ic-bullet">→</span> Statistical physics underlying scaling laws</li>
+          <li><span class="ic-bullet">→</span> Learning dynamics &amp; emergence</li>
+        </ul>
+      </div>
+
+      <div class="interest-cluster pixel-box interest-cluster--phys">
+        <div class="ic-header">
+          <span class="ic-icon">⚛️</span>
+          <span class="ic-title press-start">Theoretical Physics</span>
+        </div>
+        <ul class="ic-items">
+          <li><span class="ic-bullet">→</span> Black hole thermodynamics</li>
+          <li><span class="ic-bullet">→</span> Holographic principle</li>
+          <li><span class="ic-bullet">→</span> Quantum gravity</li>
+        </ul>
+      </div>
+
+      <div class="interest-cluster pixel-box interest-cluster--math">
+        <div class="ic-header">
+          <span class="ic-icon">📐</span>
+          <span class="ic-title press-start">Mathematics</span>
+        </div>
+        <ul class="ic-items">
+          <li><span class="ic-bullet">→</span> Differential geometry</li>
+          <li><span class="ic-bullet">→</span> Algebraic topology</li>
+        </ul>
+      </div>
+
+      <div class="interest-cluster pixel-box interest-cluster--social">
+        <div class="ic-header">
+          <span class="ic-icon">🌐</span>
+          <span class="ic-title press-start">Social Sciences</span>
+        </div>
+        <ul class="ic-items">
+          <li><span class="ic-bullet">→</span> Social thermodynamics</li>
+          <li><span class="ic-bullet">→</span> Complexity &amp; emergent behaviour</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Connecting thread visual -->
+    <div class="interests-connector">
+      <div class="connector-line"></div>
+      <div class="connector-label press-start">UNIFIED BY: ENTROPY &amp; EMERGENCE</div>
+      <div class="connector-line"></div>
+    </div>
+  </div>
+
+  <div class="education-section">
+    <h3 class="press-start sub-title">// EDUCATION</h3>
+    <div class="edu-timeline">
+      <div class="edu-item" data-year="2021–">
+        <div class="edu-dot"></div>
+        <div class="edu-content pixel-box">
+          <div class="edu-degree">PhD — Applied Maths &amp; Theoretical Physics</div>
+          <div class="edu-school">DAMTP &amp; Trinity College, University of Cambridge</div>
+          <div class="edu-note">Supervisor: Aron C. Wall</div>
+          <div class="edu-note">Defense passed, conferral expected summer 2026</div>
+        </div>
+      </div>
+      <div class="edu-item" data-year="2020–21">
+        <div class="edu-dot"></div>
+        <div class="edu-content pixel-box">
+          <div class="edu-degree">MMath in Mathematics</div>
+          <div class="edu-school">Trinity College, Cambridge</div>
+          <div class="edu-note">Distinction (86%)</div>
+        </div>
+      </div>
+      <div class="edu-item" data-year="2017–20">
+        <div class="edu-dot"></div>
+        <div class="edu-content pixel-box">
+          <div class="edu-degree">BA Natural Sciences (Physics)</div>
+          <div class="edu-school">Trinity College, Cambridge</div>
+          <div class="edu-note">First Class</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ RESEARCH ░░░ -->
+<section id="research" class="section">
+  <div class="section-header">
+    <h2 class="press-start section-title"><span class="title-bracket">[</span> RESEARCH <span class="title-bracket">]</span></h2>
+  </div>
+
+  <div class="research-layout">
+    <div class="blackhole-container">
+      <canvas id="blackhole-canvas" width="360" height="360"></canvas>
+      <div class="bh-label press-start">BLACK HOLE</div>
+      <div class="bh-sublabel">entropy is increasing...</div>
+      <div class="bh-entropy-eq">dS/dv ≥ 0</div>
+    </div>
+
+    <div class="research-areas">
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">Black Hole Thermodynamics</div>
+        <div class="rc-desc">Dynamical entropy of non-stationary black holes in diffeomorphism-invariant theories. Proving the second law for higher-curvature gravity.</div>
+        <div class="rc-papers">Papers: [1][5][8]</div>
+      </div>
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">Gravitational Focusing</div>
+        <div class="rc-desc">Generalised focusing theorems and dynamical horizon entropy for bosonic fields in diffeomorphism-invariant theories.</div>
+        <div class="rc-papers">Papers: [2][3]</div>
+      </div>
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">Low-Energy EFT of String Theory</div>
+        <div class="rc-desc">Gibbons-Hawking-York boundary terms from string worldsheets. Black hole singularity resolution via string theory.</div>
+        <div class="rc-papers">Papers: [4][7]</div>
+      </div>
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">AI × Gravity</div>
+        <div class="rc-desc">Machine learning applied to discover dynamical black hole entropy formulae in general theories of gravity.</div>
+        <div class="rc-papers">Forthcoming</div>
+      </div>
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">Quantum Energy Conditions</div>
+        <div class="rc-desc">Proofs of the Quantum Dominant Energy Condition.</div>
+        <div class="rc-papers">Forthcoming</div>
+      </div>
+      <div class="research-card pixel-box" onclick="expandResearch(this)">
+        <div class="rc-title">Fluid Dynamics</div>
+        <div class="rc-desc">Thin-film flows over slippery fluid-saturated substrates. Basal sliding of ice sheets — a controllable sliding law.</div>
+        <div class="rc-papers">Paper: [6]</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ PUBLICATIONS ░░░ -->
+<section id="publications" class="section">
+  <div class="section-header">
+    <h2 class="press-start section-title"><span class="title-bracket">[</span> PUBLICATIONS <span class="title-bracket">]</span></h2>
+  </div>
+  <div class="pub-filter">
+    <button class="filter-btn active" onclick="filterPubs('all', this)">ALL</button>
+    <button class="filter-btn" onclick="filterPubs('ai', this)">AI</button>
+    <button class="filter-btn" onclick="filterPubs('aiscience', this)">AI FOR SCIENCE</button>
+    <button class="filter-btn" onclick="filterPubs('bh', this)">BLACK HOLES</button>
+    <button class="filter-btn" onclick="filterPubs('string', this)">STRINGS</button>
+    <button class="filter-btn" onclick="filterPubs('fluid', this)">FLUID</button>
+  </div>
+
+  <div class="pub-list" id="pub-list">
+    <!-- 内容由 script.js 从 publications.bib 动态生成（保持与原先相同的卡片结构） -->
+  </div>
+
+</section>
+
+<!-- ░░░ CONTACT ░░░ -->
+<section id="contact" class="section">
+  <div class="section-header">
+    <h2 class="press-start section-title"><span class="title-bracket">[</span> CONTACT <span class="title-bracket">]</span></h2>
+  </div>
+  <div class="contact-layout">
+    <div class="terminal-box contact-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+        <span class="t-title">zihan@cambridge — bash</span>
+      </div>
+      <div class="terminal-body">
+        <p class="t-line"><span class="t-cmd">$ cat contact_info.txt</span></p>
+        <p class="t-line t-output"></p>
+        <p class="t-line t-output">📧  <span class="t-cyan email-obfuscated">zy286 [at] cam [dot] ac [dot] uk</span></p>
+        <p class="t-line t-output">🐦  X / Twitter: <a href="https://x.com/physicscat0x7d" class="t-link" target="_blank" rel="noopener noreferrer">@physicscat0x7d</a></p>
+        <p class="t-line t-output">📍  Trinity College, Cambridge CB2 1TQ</p>
+        <p class="t-line t-output">🔗  ORCID: 0000-0003-2998-7040</p>
+        <p class="t-line"><span class="t-cmd">$ cat reference.txt</span></p>
+        <p class="t-line t-output">References available on request.</p>
+        <p class="t-line t-output"></p>
+        <p class="t-line"><span class="t-cmd">$ _<span class="blink">█</span></span></p>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <div class="pixel-box contact-links">
+        <a href="https://www.damtp.cam.ac.uk/person/zy286" class="contact-btn pixel-btn pixel-btn--outline" target="_blank" rel="noopener noreferrer">🏛 UNIVERSITY PAGE</a>
+        <a href="https://scholar.google.com/citations?user=9DhirV4AAAAJ&amp;hl=en" class="contact-btn pixel-btn pixel-btn--outline" target="_blank" rel="noopener noreferrer">📚 GOOGLE SCHOLAR</a>
+        <a href="https://inspirehep.net/authors/2757519?ui-citation-summary=true" class="contact-btn pixel-btn pixel-btn--outline" target="_blank" rel="noopener noreferrer">i INSPIRE HEP</a>
+        <a href="https://www.linkedin.com/in/zihan-yan/" class="contact-btn pixel-btn pixel-btn--outline" target="_blank" rel="noopener noreferrer">💼 LINKEDIN</a>
+      </div>
+      <div class="pixel-box cat-quote" id="cat-quote">
+        <div class="cq-cat">🐱</div>
+        <div class="cq-text" id="cq-text">Click the cat to reveal a physics wisdom!</div>
+        <button class="pixel-btn pixel-btn--small" onclick="newCatQuote()">NEW WISDOM</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ FOOTER ░░░ -->
+<footer>
+  <div class="footer-cat-row">
+    <span id="footer-cats"></span>
+  </div>
+  <div class="footer-text press-start">
+    © 2026 ZIHAN YAN &nbsp;|&nbsp; ENTROPY: EVER INCREASING &nbsp;|&nbsp; 🐱 &nbsp;|&nbsp; Powered by Molly Chen using Cursor and Claude Code
+  </div>
+  <div class="footer-eq">S[Bekenstein-Hawking] = A / 4G</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
