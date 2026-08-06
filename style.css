@@ -222,6 +222,15 @@ a:hover { text-shadow: var(--glow-c); }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 .blink { animation: blink .7s steps(1) infinite; }
 
+.hero-tagline {
+  font-family: var(--mono);
+  font-size: clamp(.85rem, 2.4vw, 1.05rem);
+  color: var(--white);
+  opacity: .72;
+  letter-spacing: .06em;
+  margin: -.7rem 0 1.6rem;
+}
+
 .hero-tags {
   display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem;
   margin-bottom: 2rem;
@@ -487,6 +496,8 @@ a:hover { text-shadow: var(--glow-c); }
   display: flex; gap: .5rem; flex-wrap: wrap;
   margin-bottom: 1.5rem;
 }
+/* 按钮由 JS 注入；未注入时（加载中／只有一个类别）不留空白 */
+.pub-filter:empty { margin-bottom: 0; }
 .filter-btn {
   font-family: var(--pixel); font-size: .35rem;
   padding: .4rem .8rem;

@@ -431,7 +431,7 @@
   const el = document.getElementById('hero-type');
   if (!el) return;
   const phrases = [
-    'PhD Candidate @ Cambridge 🎓',
+    'PhD/MA/MMath/BA, Cantab 🎓',
     'Theoretical Physicist ⚛️',
     'AI Researcher 🤖',
     'Pianist 🎹',
@@ -781,10 +781,62 @@ function toggleSchrodinger() {
     return `<div class="pub-links">${parts.join('')}</div>`;
   }
 
+  function entryCategory(entry) {
+    const raw = entry.fields.category != null ? String(entry.fields.category).trim() : '';
+    return (raw ? stripBibBraces(raw) : 'none').toLowerCase();
+  }
+
+  /* 过滤按钮的显示名；未列出的 category 直接大写显示 */
+  const CAT_LABELS = {
+    ai: 'AI',
+    aiscience: 'AI FOR SCIENCE',
+    bh: 'BLACK HOLES',
+    string: 'STRINGS',
+    fluid: 'FLUID',
+  };
+  /* 已知 category 的展示顺序；其余按字母序排在后面 */
+  const CAT_ORDER = ['ai', 'aiscience', 'bh', 'string', 'fluid'];
+
+  function buildFilterBar(entries) {
+    const bar = document.getElementById('pub-filter');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    const present = [...new Set(entries.map(entryCategory))].filter(c => c && c !== 'none');
+    present.sort((a, b) => {
+      const ia = CAT_ORDER.indexOf(a);
+      const ib = CAT_ORDER.indexOf(b);
+      if (ia !== -1 && ib !== -1) return ia - ib;
+      if (ia !== -1) return -1;
+      if (ib !== -1) return 1;
+      return a.localeCompare(b);
+    });
+
+    /* 只有一个类别时过滤没有意义，整条按钮栏不显示 */
+    if (present.length < 2) return;
+
+    const buttons = [['all', 'ALL']].concat(
+      present.map(c => [c, CAT_LABELS[c] || c.toUpperCase()])
+    );
+    buttons.forEach(([cat, label], i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'filter-btn' + (i === 0 ? ' active' : '');
+      btn.textContent = label;
+      btn.addEventListener('click', () => filterPubs(cat, btn));
+      bar.appendChild(btn);
+    });
+  }
+
+  /* ABOUT 里的 PAPERS 数字与 publications.bib 保持同步，避免手动改漏 */
+  function updatePaperCount(n) {
+    const el = document.getElementById('stat-papers');
+    if (el) el.textContent = String(n);
+  }
+
   function renderPubEntry(entry, index) {
     const f = entry.fields;
-    const rawCat = f.category != null ? String(f.category).trim() : '';
-    const cat = (rawCat ? stripBibBraces(rawCat) : 'none').toLowerCase();
+    const cat = entryCategory(entry);
     const leadRaw = f.lead ? stripBibBraces(f.lead).toLowerCase() : '';
     const lead = leadRaw === 'true' || leadRaw === '1' || leadRaw === 'yes';
     const title = escapeHtml(stripBibBraces(f.title || ''));
@@ -833,6 +885,8 @@ function toggleSchrodinger() {
           return;
         }
         list.innerHTML = entries.map((e, i) => renderPubEntry(e, i + 1)).join('');
+        buildFilterBar(entries);
+        updatePaperCount(entries.length);
         revealPubEntries();
       } catch (e) {
         showPubError(e.message || String(e));
